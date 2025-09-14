@@ -3,7 +3,7 @@ FROM nvidia/cuda:12.6.0-runtime-ubuntu22.04 AS base
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PORT=7865 \
+    PORT=8080 \
     HF_HUB_ENABLE_HF_TRANSFER=1 \
     DEBIAN_FRONTEND=noninteractive
 
@@ -51,13 +51,13 @@ RUN chown -R appuser:appuser /app
 USER appuser
 
 # Expose the port the app runs on
-EXPOSE 7865
+EXPOSE ${PORT}
 
 VOLUME [ "/app/checkpoints", "/app/outputs", "/app/logs" ]
 
 # Set healthcheck
 HEALTHCHECK --interval=60s --timeout=10s --start-period=5s --retries=5 \
-  CMD curl -f http://localhost:7865/ || exit 1
+  CMD curl -f http://0.0.0.0:8080/ || exit 1
 
 # Command to run the application with GPU support
 CMD ["python3", "acestep/gui.py", "--server_name", "0.0.0.0", "--bf16", "true"]
