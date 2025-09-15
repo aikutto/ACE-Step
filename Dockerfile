@@ -37,7 +37,8 @@ RUN git clone https://github.com/ace-step/ACE-Step.git .
 # Install specific PyTorch version compatible with CUDA 12.6
 RUN pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir hf_transfer peft && \
-    pip3 install --no-cache-dir -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu126
+    pip3 install --no-cache-dir -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu126 \
+    pip3 install fastapi
 RUN pip3 install --no-cache-dir .
 
 # Ensure target directories for volumes exist and have correct initial ownership
@@ -51,13 +52,13 @@ RUN chown -R appuser:appuser /app
 USER appuser
 
 # Expose the port the app runs on
-EXPOSE ${PORT}
+EXPOSE 8080
 
 VOLUME [ "/app/checkpoints", "/app/outputs", "/app/logs" ]
 
 # Set healthcheck
-HEALTHCHECK --interval=60s --timeout=10s --start-period=5s --retries=5 \
-  CMD curl -f http://0.0.0.0:8080/ || exit 1
+# HEALTHCHECK --interval=60s --timeout=10s --start-period=5s --retries=5 \
+#   CMD curl -f http://localhost:7865/ || exit 1
 
 # Command to run the application with GPU support
-CMD ["python3", "acestep/gui.py", "--server_name", "0.0.0.0", "--bf16", "true"]
+CMD ["python3", "infer-api.py", "--host", "0.0.0.0", "--port", "8080"]

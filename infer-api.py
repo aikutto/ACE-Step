@@ -14,7 +14,7 @@ class ACEStepInput(BaseModel):
     torch_compile: bool = False
     device_id: int = 0
     output_path: Optional[str] = None
-    audio_duration: float
+    audio_duration: float 
     prompt: str
     lyrics: str
     infer_step: int
@@ -59,7 +59,8 @@ async def generate_audio(input_data: ACEStepInput):
 
         # Prepare parameters
         params = (
-            input_data.audio_duration,
+            "wav",
+            input_data.audio_duration, # audio duration in seconds
             input_data.prompt,
             input_data.lyrics,
             input_data.infer_step,
@@ -80,7 +81,7 @@ async def generate_audio(input_data: ACEStepInput):
         )
 
         # Generate output path if not provided
-        output_path = input_data.output_path or f"output_{uuid.uuid4().hex}.wav"
+        output_path = f"./download/{uuid.uuid4().hex}.wav"
 
         # Run pipeline
         model_demo(
@@ -103,4 +104,4 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=os.environ["PORT"])
