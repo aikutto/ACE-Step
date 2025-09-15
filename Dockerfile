@@ -57,8 +57,8 @@ EXPOSE 8080
 VOLUME [ "/app/checkpoints", "/app/outputs", "/app/logs" ]
 
 # Set healthcheck
-# HEALTHCHECK --interval=60s --timeout=10s --start-period=5s --retries=5 \
-#   CMD curl -f http://localhost:7865/ || exit 1
+HEALTHCHECK --interval=60s --timeout=10s --start-period=5s --retries=5 \
+    CMD curl -f http://localhost:8080/ || exit 1
 
 # Command to run the application with GPU support
 CMD ["python3", "infer-api.py", "--host", "0.0.0.0", "--port", "8080"]
