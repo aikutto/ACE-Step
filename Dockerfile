@@ -36,9 +36,7 @@ RUN git clone https://github.com/ace-step/ACE-Step.git .
 
 # Install specific PyTorch, TorchAudio, and TorchVision versions compatible with CUDA 12.6
 RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cu126 && \
-    pip3 install --no-cache-dir -r requirements.txt && \
-    pip3 install --no-cache-dir fastapi
+    pip3 install --no-cache-dir -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu126
 RUN pip3 install --no-cache-dir .
 
 # Ensure target directories for volumes exist and have correct initial ownership
