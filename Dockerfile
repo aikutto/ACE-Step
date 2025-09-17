@@ -34,10 +34,10 @@ WORKDIR /app
 # Clone the repository
 RUN git clone https://github.com/ace-step/ACE-Step.git .
 
-# Install specific PyTorch version compatible with CUDA 12.6
+# Install specific PyTorch, TorchAudio, and TorchVision versions compatible with CUDA 12.6
 RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir hf_transfer peft && \
-    pip3 install --no-cache-dir -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu126 && \
+    pip3 install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cu126 && \
+    pip3 install --no-cache-dir -r requirements.txt && \
     pip3 install --no-cache-dir fastapi
 RUN pip3 install --no-cache-dir .
 
@@ -61,4 +61,4 @@ HEALTHCHECK --interval=60s --timeout=10s --start-period=5s --retries=5 \
     CMD curl -f http://localhost:8080/ || exit 1
 
 # Command to run the application with GPU support
-CMD ["python3", "infer-api.py", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["python3", "infer-api.py"]

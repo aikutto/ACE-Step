@@ -102,6 +102,8 @@ async def generate_audio(input_data: ACEStepInput):
 async def health_check():
     return {"status": "healthy"}
 
+PORT = int(os.getenv("PORT", 8080))  # Set default port value to 8080 if not provided
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=os.environ["PORT"])
+    uvicorn.run(app, host="0.0.0.0", port=PORT)

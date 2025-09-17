@@ -8,9 +8,9 @@ numpy
 pypinyin==0.53.0
 pytorch_lightning==2.5.1
 soundfile==0.13.1
-torch
-torchaudio
-torchvision
+torch==2.0.1+cu126
+torchaudio==2.0.2+cu126
+torchvision==0.15.2+cu126
 tqdm
 transformers==4.50.0
 py3langid==0.3.0
